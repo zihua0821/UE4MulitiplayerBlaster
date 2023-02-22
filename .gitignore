@@ -1,5 +1,6 @@
 # Visual Studio 2015 user specific files
 .vs/
+.idea/
 
 # Compiled Object files
 *.slo
@@ -73,6 +74,7 @@ Plugins/*/Intermediate/*
 # Cache files for the editor to use
 DerivedDataCache/*
 
+Plugins/Developer/*
 
 Content/LearningKit_Games/*
 Content/MilitaryWeapSilver/*
