@@ -6,6 +6,6 @@
 /NAME:"UE4Editor-RiderShaderInfo.dll"
 /IGNORE:4221
 /NODEFAULTLIB
-"H:\UEObj\Blaster\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UE4Editor\Development\RiderShaderInfo\RiderShaderInfo.cpp.obj"
-"H:\UEObj\Blaster\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UE4Editor\Development\RiderShaderInfo\Default.rc2.res"
-/OUT:"H:\UEObj\Blaster\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UE4Editor\Development\RiderShaderInfo\UE4Editor-RiderShaderInfo.lib"
+"H:\UEObj\UE4MulitiplayerBlaster\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UE4Editor\Development\RiderShaderInfo\RiderShaderInfo.cpp.obj"
+"H:\UEObj\UE4MulitiplayerBlaster\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UE4Editor\Development\RiderShaderInfo\Default.rc2.res"
+/OUT:"H:\UEObj\UE4MulitiplayerBlaster\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UE4Editor\Development\RiderShaderInfo\UE4Editor-RiderShaderInfo.lib"

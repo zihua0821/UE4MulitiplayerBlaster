@@ -33,8 +33,8 @@
 /NODEFAULTLIB:"LIBCD"
 /NODEFAULTLIB:"LIBCPD"
 /FUNCTIONPADMIN
-"H:\UEObj\Blaster\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UE4Editor\Development\RiderShaderInfo\RiderShaderInfo.cpp.obj"
-"H:\UEObj\Blaster\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UE4Editor\Development\RiderShaderInfo\Default.rc2.res"
+"H:\UEObj\UE4MulitiplayerBlaster\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UE4Editor\Development\RiderShaderInfo\RiderShaderInfo.cpp.obj"
+"H:\UEObj\UE4MulitiplayerBlaster\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UE4Editor\Development\RiderShaderInfo\Default.rc2.res"
 "H:\Epic Games\UE_4.27\Engine\Intermediate\Build\Win64\UE4Editor\Development\Core\UE4Editor-Core.lib"
 "H:\Epic Games\UE_4.27\Engine\Intermediate\Build\Win64\UE4Editor\Development\Projects\UE4Editor-Projects.lib"
 "H:\Epic Games\UE_4.27\Engine\Intermediate\Build\Win64\UE4Editor\Development\RenderCore\UE4Editor-RenderCore.lib"
@@ -62,7 +62,7 @@
 "setupapi.lib"
 "dwmapi.lib"
 "imm32.lib"
-/OUT:"H:\UEObj\Blaster\Plugins\Developer\RiderLink\Binaries\Win64\UE4Editor-RiderShaderInfo.dll"
-/IMPLIB:"H:\UEObj\Blaster\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UE4Editor\Development\RiderShaderInfo\UE4Editor-RiderShaderInfo.suppressed.lib"
-/PDB:"H:\UEObj\Blaster\Plugins\Developer\RiderLink\Binaries\Win64\UE4Editor-RiderShaderInfo.pdb"
+/OUT:"H:\UEObj\UE4MulitiplayerBlaster\Plugins\Developer\RiderLink\Binaries\Win64\UE4Editor-RiderShaderInfo.dll"
+/IMPLIB:"H:\UEObj\UE4MulitiplayerBlaster\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UE4Editor\Development\RiderShaderInfo\UE4Editor-RiderShaderInfo.suppressed.lib"
+/PDB:"H:\UEObj\UE4MulitiplayerBlaster\Plugins\Developer\RiderLink\Binaries\Win64\UE4Editor-RiderShaderInfo.pdb"
 /ignore:4078

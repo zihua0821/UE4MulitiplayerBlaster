@@ -1,5 +1,5 @@
-H:\UEObj\Blaster\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UE4Editor\Development\RiderShaderInfo\Definitions.h
-H:\UEObj\Blaster\Plugins\Developer\RiderLink\Source\RiderShaderInfo\RiderShaderInfo.h
+H:\UEObj\UE4MulitiplayerBlaster\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UE4Editor\Development\RiderShaderInfo\Definitions.h
+H:\UEObj\UE4MulitiplayerBlaster\Plugins\Developer\RiderLink\Source\RiderShaderInfo\RiderShaderInfo.h
 H:\Epic Games\UE_4.27\Engine\Source\Runtime\Core\Public\Modules/ModuleInterface.h
 H:\Epic Games\UE_4.27\Engine\Source\Runtime\Core\Public\CoreTypes.h
 H:\Epic Games\UE_4.27\Engine\Source\Runtime\Core\Public\HAL/Platform.h

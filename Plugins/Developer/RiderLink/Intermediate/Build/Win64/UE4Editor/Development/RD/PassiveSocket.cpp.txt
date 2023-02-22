@@ -1,7 +1,7 @@
-H:\UEObj\Blaster\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UE4Editor\Development\RD\Definitions.h
-H:\UEObj\Blaster\Plugins\Developer\RiderLink\Source\RD\thirdparty\clsocket\src\PassiveSocket.h
-H:\UEObj\Blaster\Plugins\Developer\RiderLink\Source\RD\thirdparty\clsocket\src\ActiveSocket.h
-H:\UEObj\Blaster\Plugins\Developer\RiderLink\Source\RD\thirdparty\clsocket\src\SimpleSocket.h
+H:\UEObj\UE4MulitiplayerBlaster\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UE4Editor\Development\RD\Definitions.h
+H:\UEObj\UE4MulitiplayerBlaster\Plugins\Developer\RiderLink\Source\RD\thirdparty\clsocket\src\PassiveSocket.h
+H:\UEObj\UE4MulitiplayerBlaster\Plugins\Developer\RiderLink\Source\RD\thirdparty\clsocket\src\ActiveSocket.h
+H:\UEObj\UE4MulitiplayerBlaster\Plugins\Developer\RiderLink\Source\RD\thirdparty\clsocket\src\SimpleSocket.h
 C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt\sys/stat.h
 C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt\corecrt.h
 H:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\INCLUDE\vcruntime.h
@@ -144,11 +144,11 @@ C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared\qos.h
 C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um\Ws2tcpip.h
 C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared\ws2ipdef.h
 C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared\in6addr.h
-H:\UEObj\Blaster\Plugins\Developer\RiderLink\Source\RD\thirdparty\clsocket\src\Host.h
+H:\UEObj\UE4MulitiplayerBlaster\Plugins\Developer\RiderLink\Source\RD\thirdparty\clsocket\src\Host.h
 H:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\INCLUDE\cstdint
 H:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\INCLUDE\yvals_core.h
 H:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\INCLUDE\xkeycheck.h
 H:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\INCLUDE\stdint.h
-H:\UEObj\Blaster\Plugins\Developer\RiderLink\Source\RD\thirdparty\clsocket\src\StatTimer.h
+H:\UEObj\UE4MulitiplayerBlaster\Plugins\Developer\RiderLink\Source\RD\thirdparty\clsocket\src\StatTimer.h
 C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt\time.h
 C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt\corecrt_wtime.h
