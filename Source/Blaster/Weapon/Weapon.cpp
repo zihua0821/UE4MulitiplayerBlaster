@@ -3,11 +3,15 @@
 
 #include "Weapon.h"
 
+#include "Blaster/Character/BlasterCharacter.h"
 #include "Components/SphereComponent.h"
+#include "Components/WidgetComponent.h"
 
 // Sets default values
 AWeapon::AWeapon()
 {
+	
+	
 	PrimaryActorTick.bCanEverTick = false;
 	bReplicates = true;
 
@@ -23,7 +27,16 @@ AWeapon::AWeapon()
 	AreaSphere->SetupAttachment(RootComponent);
 	AreaSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
 	AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	
+
+	PickupWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("PickupWidget"));
+	PickupWidget->SetupAttachment(RootComponent);
+
+	if (HasAuthority())
+	{
+		AreaSphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		AreaSphere->SetCollisionResponseToChannel(ECC_Pawn,ECR_Overlap);
+		AreaSphere->OnComponentBeginOverlap.AddDynamic(this,&AWeapon::OnSphereOverlap);
+	}
 }
 
 // Called when the game starts or when spawned
@@ -31,10 +44,19 @@ void AWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (HasAuthority())
+	if (PickupWidget)
 	{
-		AreaSphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		AreaSphere->SetCollisionResponseToChannel(ECC_Pawn,ECR_Overlap);
+		PickupWidget->SetVisibility(false);
+	}
+}
+
+void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(OtherActor);
+	if (BlasterCharacter && PickupWidget)
+	{
+		PickupWidget->SetVisibility(true);
 	}
 }
 
