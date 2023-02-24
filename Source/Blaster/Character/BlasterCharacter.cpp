@@ -31,6 +31,10 @@ ABlasterCharacter::ABlasterCharacter()
 
 	Combat = CreateDefaultSubobject<UCombatComponent>(TEXT("CombatComponent"));
 	Combat->SetIsReplicated(true);
+
+	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
+	GetCharacterMovement()->CrouchedHalfHeight = 60.f;
+	GetCharacterMovement()->MaxWalkSpeedCrouched = 100.f;
 }
 
 void ABlasterCharacter::BeginPlay()
@@ -45,6 +49,8 @@ void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Equip",IE_Pressed,this,&ThisClass::EquipButtonPressed);
+	PlayerInputComponent->BindAction("Crouch",IE_Pressed,this,&ThisClass::CrouchButtonPressed);
+	PlayerInputComponent->BindAction("Crouch",IE_Released,this,&ThisClass::CrouchButtonReleased);
 	
 	PlayerInputComponent->BindAxis("MoveForward", this, &ThisClass::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ThisClass::MoveRight);
@@ -112,6 +118,16 @@ void ABlasterCharacter::EquipButtonPressed()
 			ServerEquipButtonPressed();
 		}
 	}
+}
+
+void ABlasterCharacter::CrouchButtonPressed()
+{
+	Crouch();
+}
+
+void ABlasterCharacter::CrouchButtonReleased()
+{
+	UnCrouch();
 }
 
 void ABlasterCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
