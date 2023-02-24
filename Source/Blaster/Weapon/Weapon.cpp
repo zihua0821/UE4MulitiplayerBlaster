@@ -95,6 +95,13 @@ void AWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 
 }
 
+void AWeapon::OnRep_Owner()
+{
+	Super::OnRep_Owner();
+
+	
+}
+
 void AWeapon::OnRep_WeaponState()
 {
 	switch (WeaponState)
