@@ -38,11 +38,14 @@ void UCombatComponent::BeginPlay()
 
 void UCombatComponent::SetAiming(bool bIsAiming)
 {
-	bAiming = bIsAiming;
-	ServerSetAiming(bIsAiming);
-	if (Character)
+	if (EquippedWeapon != nullptr)
 	{
-		Character->GetCharacterMovement()->MaxWalkSpeed = bIsAiming ? AimWalkSpeed : BaseWalkSpeed;
+		bAiming = bIsAiming;
+		ServerSetAiming(bIsAiming);
+		if (Character)
+		{
+			Character->GetCharacterMovement()->MaxWalkSpeed = bIsAiming ? AimWalkSpeed : BaseWalkSpeed;
+		}
 	}
 }
 

@@ -39,6 +39,7 @@ ABlasterCharacter::ABlasterCharacter()
 	GetCharacterMovement()->MaxWalkSpeedCrouched = 100.f;
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 0.f, 850.f);
 	
 	TurningInPlace = ETurningInPlace::ETIP_NotTurning;
 	NetUpdateFrequency = 66.f;
@@ -160,13 +161,14 @@ void ABlasterCharacter::AimOffset(float DeltaTime)
 {
 	if (Combat && Combat->EquippedWeapon == nullptr)
 	{
+		StartingAimRotation = FRotator(0.f, GetBaseAimRotation().Yaw, 0.f);
 		return;
 	}
 	FVector Velocity = GetVelocity();
 	Velocity.Z = 0.f;
 	float Speed = Velocity.Size();
 	bool bIsInAir = GetCharacterMovement()->IsFalling();
-
+	
 	if (Speed == 0.f && !bIsInAir)
 	{
 		FRotator CurrentAimRotation = FRotator(0.f, GetBaseAimRotation().Yaw, 0.f);
@@ -179,6 +181,7 @@ void ABlasterCharacter::AimOffset(float DeltaTime)
 		bUseControllerRotationYaw = true;
 		TurnInPlace(DeltaTime);
 	}
+	
 	if (Speed > 0.f || bIsInAir)
 	{
 		StartingAimRotation = FRotator(0.f, GetBaseAimRotation().Yaw, 0.f);
@@ -193,7 +196,15 @@ void ABlasterCharacter::AimOffset(float DeltaTime)
 		AO_Pitch-=360.f;
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("AO_Yaw: %f"), AO_Yaw);
+}
+
+void ABlasterCharacter::Jump()
+{
+	if (bIsCrouched)
+	{
+		UnCrouch();
+	}
+	Super::Jump();
 }
 
 void ABlasterCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
@@ -278,4 +289,5 @@ void ABlasterCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	AimOffset(DeltaTime);
+
 }
