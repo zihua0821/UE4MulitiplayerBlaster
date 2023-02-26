@@ -62,7 +62,9 @@ void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("Crouch",IE_Released,this,&ThisClass::CrouchButtonReleased);
 	PlayerInputComponent->BindAction("Aim",IE_Pressed,this,&ThisClass::AimButtonPressed);
 	PlayerInputComponent->BindAction("Aim",IE_Released,this,&ThisClass::AimButtonReleased);
-	
+	PlayerInputComponent->BindAction("Fire",IE_Pressed,this,&ThisClass::FireButtonPressed);
+	PlayerInputComponent->BindAction("Fire",IE_Released,this,&ThisClass::FireButtonReleased);
+
 	PlayerInputComponent->BindAxis("MoveForward", this, &ThisClass::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &ThisClass::MoveRight);
 	PlayerInputComponent->BindAxis("Turn", this, &ThisClass::Turn);
@@ -83,6 +85,22 @@ void ABlasterCharacter::PostInitializeComponents()
 	if (Combat)
 	{
 		Combat->Character = this;
+	}
+}
+
+void ABlasterCharacter::PlayFireMontage(bool bAiming)
+{
+	if (Combat == nullptr || Combat->EquippedWeapon == nullptr)
+	{
+		return;
+	}
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && FireWeaponMontage)
+	{
+		AnimInstance->Montage_Play(FireWeaponMontage);
+		FName SectionName;
+		SectionName = bAiming ? FName("RifleAim") : FName("RifleHip");
+		AnimInstance->Montage_JumpToSection(SectionName);
 	}
 }
 
@@ -205,6 +223,22 @@ void ABlasterCharacter::Jump()
 		UnCrouch();
 	}
 	Super::Jump();
+}
+
+void ABlasterCharacter::FireButtonPressed()
+{
+	if (Combat)
+	{
+		Combat->FireButtonPressed(true);
+	}
+}
+
+void ABlasterCharacter::FireButtonReleased()
+{
+	if (Combat)
+	{
+		Combat->FireButtonPressed(false);
+	}
 }
 
 void ABlasterCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
