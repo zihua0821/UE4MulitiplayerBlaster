@@ -323,10 +323,5 @@ void ABlasterCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	AimOffset(DeltaTime);
-
-	if (Combat)
-	{
-		FHitResult HitResult;
-		Combat->TraceUnderCrosshairs(HitResult);
-	}
+	
 }
