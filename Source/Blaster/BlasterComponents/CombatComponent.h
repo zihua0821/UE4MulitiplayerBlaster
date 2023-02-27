@@ -21,6 +21,8 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
 	void EquipWeapon(class AWeapon* WeaponToEquip);
+	void TraceUnderCrosshairs(FHitResult& TraceHitResult);
+
 protected:
 	virtual void BeginPlay() override;
 	void SetAiming(bool bIsAiming);
@@ -39,7 +41,6 @@ protected:
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastFire();
 
-	void TraceUnderCrosshairs(FHitResult& TraceHitResult);
 private:
 	class ABlasterCharacter* Character;
 
@@ -56,6 +57,8 @@ private:
 	float AimWalkSpeed;
 
 	bool bFireButtonPressed;
+
+	FVector HitTarget;
 public:	
 
 		
