@@ -3,7 +3,6 @@
 
 #include "CombatComponent.h"
 
-#include "DrawDebugHelpers.h"
 #include "Blaster/Character/BlasterCharacter.h"
 #include "Blaster/Weapon/Weapon.h"
 #include "Engine/SkeletalMeshSocket.h"
@@ -23,6 +22,7 @@ UCombatComponent::UCombatComponent()
 
 	BaseWalkSpeed = 600.f;
 	AimWalkSpeed = 450.f;
+	
 	// ...
 }
 
@@ -116,6 +116,7 @@ void UCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
 
 void UCombatComponent::SetHUDCrosshairs(float DeltaTime)
 {
+
 	if (Character == nullptr || Character->Controller == nullptr)
 	{
 		return;
@@ -144,7 +145,6 @@ void UCombatComponent::SetHUDCrosshairs(float DeltaTime)
 				HUDPackage.CrosshairsBottom = nullptr;
 			}
 			HUD->SetHUDPackage(HUDPackage);
-
 		}
 	}
 }
