@@ -323,5 +323,9 @@ void ABlasterCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	AimOffset(DeltaTime);
-	
+	if (Combat)
+	{
+		Combat->SetHUDCrosshairs(DeltaTime);
+
+	}
 }
