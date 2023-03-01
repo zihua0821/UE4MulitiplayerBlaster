@@ -64,8 +64,9 @@ private:
 	bool bFireButtonPressed;
 
 	float CrosshairVelocityFactor;
-	
 	float CrosshairInAirFactor;
+	float CrosshairAimFactor;
+	float CrosshairShootingFactor;
 
 	float DefaultFOV;
 
