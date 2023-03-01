@@ -22,6 +22,7 @@ public:
 	
 	void EquipWeapon(class AWeapon* WeaponToEquip);
 	void SetHUDCrosshairs(float DeltaTime);
+	void InterpFOV(float DeltaTime);
 
 protected:
 	virtual void BeginPlay() override;
@@ -65,6 +66,16 @@ private:
 	float CrosshairVelocityFactor;
 	
 	float CrosshairInAirFactor;
+
+	float DefaultFOV;
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	float ZoomedFOV = 30.f;
+
+	float CurrentFOV;
+	
+	UPROPERTY(EditAnywhere, Category = Combat)
+	float ZoomInterpSpeed = 20.f;
 
 public:	
 	FVector HitTarget;

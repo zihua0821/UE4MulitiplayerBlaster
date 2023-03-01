@@ -332,14 +332,13 @@ void ABlasterCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	AimOffset(DeltaTime);
-	if (Combat)
+	if (Combat && IsLocallyControlled())
 	{
+		FHitResult HitResult;
+		Combat->TraceUnderCrosshairs(HitResult);
+		Combat->HitTarget = HitResult.ImpactPoint;
+
 		Combat->SetHUDCrosshairs(DeltaTime);
-		if (IsLocallyControlled())
-		{
-			FHitResult HitResult;
-			Combat->TraceUnderCrosshairs(HitResult);
-			Combat->HitTarget = HitResult.ImpactPoint;
-		}
+		Combat->InterpFOV(DeltaTime);
 	}
 }
