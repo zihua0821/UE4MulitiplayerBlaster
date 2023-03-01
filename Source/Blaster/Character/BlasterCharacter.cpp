@@ -39,6 +39,7 @@ ABlasterCharacter::ABlasterCharacter()
 	GetCharacterMovement()->MaxWalkSpeedCrouched = 100.f;
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 0.f, 850.f);
 	
 	TurningInPlace = ETurningInPlace::ETIP_NotTurning;

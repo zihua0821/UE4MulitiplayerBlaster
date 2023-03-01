@@ -10,6 +10,7 @@ USTRUCT(BlueprintType)
 struct FHUDPackage
 {
 	GENERATED_BODY()
+	
 public:
 	class UTexture2D* CrosshairsCenter;
 	UTexture2D* CrosshairsLeft;
@@ -17,6 +18,7 @@ public:
 	UTexture2D* CrosshairsTop;
 	UTexture2D* CrosshairsBottom;
 	float CrosshairSpread;
+	FLinearColor CrosshairsColor;
 };
 
 /**
@@ -31,8 +33,8 @@ public:
 private:
 	FHUDPackage HUDPackage;
 
-	void DrawCrosshair(UTexture2D* Texture, FVector2D ViewportCenter, FVector2D Spread);
-
+	void DrawCrosshair(UTexture2D* Texture, FVector2D ViewportCenter, FVector2D Spread, FLinearColor CrosshairColor);
+	
 	float CrosshairSpreadMax = 16.f;
 public:
 	FORCEINLINE void SetHUDPackage(const FHUDPackage& Package) { HUDPackage = Package;}
