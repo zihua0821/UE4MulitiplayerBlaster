@@ -67,6 +67,6 @@ private:
 	float CrosshairInAirFactor;
 
 public:	
-
+	FVector HitTarget;
 		
 };
