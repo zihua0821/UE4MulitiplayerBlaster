@@ -12,6 +12,7 @@
 #include "Blaster/PlayerController/BlasterPlayerController.h"
 #include "Blaster/HUD/BlasterHUD.h"
 #include "Camera/CameraComponent.h"
+#include "TimerManager.h"
 
 
 // Sets default values for this component's properties
@@ -83,16 +84,23 @@ void UCombatComponent::OnRep_EquippedWeapon()
 void UCombatComponent::FireButtonPressed(bool bPressed)
 {
 	bFireButtonPressed = bPressed;
-	if (bFireButtonPressed)
+	if (bFireButtonPressed && EquippedWeapon)
 	{
-		FHitResult HitResult;
-		TraceUnderCrosshairs(HitResult);
-		ServerFire(HitResult.ImpactPoint);
+		Fire();
+	}
+}
 
+void UCombatComponent::Fire()
+{
+	if (bCanFire)
+	{
+		bCanFire = false;
+		ServerFire(HitTarget);
 		if (EquippedWeapon)
 		{
 			CrosshairShootingFactor = .75f;
 		}
+		StartFireTimer();
 	}
 }
 
@@ -149,6 +157,32 @@ void UCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
 	}
 	
 
+}
+
+void UCombatComponent::StartFireTimer()
+{
+	UE_LOG(LogTemp, Warning, TEXT("TimerStart"));
+	if (EquippedWeapon == nullptr || Character == nullptr)
+	{
+		return;
+	}
+	Character->GetWorldTimerManager().SetTimer(
+		FireTimer,
+		this,
+		&UCombatComponent::FireTimerFinished,
+		EquippedWeapon->FireDelay
+	);
+}
+
+void UCombatComponent::FireTimerFinished()
+{
+	UE_LOG(LogTemp, Warning, TEXT("TimerFinished"));
+	if (EquippedWeapon == nullptr) return;
+	bCanFire = true;
+	if (bFireButtonPressed && EquippedWeapon->bAutomatic)
+	{
+		Fire();
+	}
 }
 
 void UCombatComponent::InterpFOV(float DeltaTime)

@@ -383,5 +383,6 @@ void ABlasterCharacter::Tick(float DeltaTime)
 
 		Combat->SetHUDCrosshairs(DeltaTime);
 		Combat->InterpFOV(DeltaTime);
+		
 	}
 }

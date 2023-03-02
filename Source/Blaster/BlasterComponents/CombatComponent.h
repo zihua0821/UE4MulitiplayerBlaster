@@ -82,7 +82,19 @@ private:
 
 	FHUDPackage HUDPackage;
 
+	FTimerHandle FireTimer;
+
+	
+	bool bCanFire = true;
+	
+	void StartFireTimer();
+	void FireTimerFinished();
+
+	void Fire();
 public:	
 	FVector HitTarget;
 		
 };
+
+
+
