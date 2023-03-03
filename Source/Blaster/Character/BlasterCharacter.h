@@ -22,9 +22,9 @@ public:
 	void PlayFireMontage(bool bAiming);
 	void PlayElimMontage();
 	void PlayHitReactMontage();
-
-	UFUNCTION(NetMulticast, Reliable)
 	void Elim();
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastElim();
 
 protected:
 	virtual void BeginPlay() override;
@@ -104,6 +104,13 @@ private:
 	class ABlasterPlayerController* BlasterPlayerController;
 
 	bool bElimmed = false;
+
+	FTimerHandle ElimTimer;
+
+	UPROPERTY(EditDefaultsOnly)
+	float ElimDelay = 3.f;
+
+	void ElimTimerFinished();
 public:	
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	bool IsWeaponEquipped();
