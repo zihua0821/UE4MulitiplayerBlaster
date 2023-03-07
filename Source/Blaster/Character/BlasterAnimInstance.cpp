@@ -2,6 +2,7 @@
 
 
 #include "BlasterAnimInstance.h"
+#include "Blaster/BlasterTypes/CombatState.h"
 
 #include "BlasterCharacter.h"
 #include "DrawDebugHelpers.h"
@@ -77,4 +78,6 @@ void UBlasterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		DrawDebugLine(GetWorld(), MuzzleTipTransform.GetLocation(), MuzzleTipTransform.GetLocation() + MuzzleX * 1000.f, FColor::Red);
 		DrawDebugLine(GetWorld(), MuzzleTipTransform.GetLocation(), BlasterCharacter->GetHitTarget(), FColor::Orange);
 	}
+
+	bUseFABRIK = BlasterCharacter->GetCombatState() != ECombatState::ECS_Reloading;
 }
