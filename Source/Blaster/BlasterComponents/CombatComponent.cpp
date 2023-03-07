@@ -119,6 +119,11 @@ bool UCombatComponent::CanFire()
 	return !EquippedWeapon->IsEmpty() || !bCanFire;
 }
 
+void UCombatComponent::OnRep_CarriedAmmo()
+{
+	
+}
+
 void UCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
 {
 	FVector2D ViewportSize;
@@ -318,6 +323,7 @@ void UCombatComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 
 	DOREPLIFETIME(UCombatComponent, EquippedWeapon);
 	DOREPLIFETIME(UCombatComponent, bAiming);
+	DOREPLIFETIME_CONDITION(UCombatComponent, CarriedAmmo, COND_OwnerOnly);
 }
 
 void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
