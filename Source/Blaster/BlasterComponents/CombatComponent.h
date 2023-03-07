@@ -24,6 +24,8 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	
 	void EquipWeapon(class AWeapon* WeaponToEquip);
+	void Reload();
+	
 	void SetHUDCrosshairs(float DeltaTime);
 	void InterpFOV(float DeltaTime);
 
@@ -47,6 +49,8 @@ protected:
 	
 	void TraceUnderCrosshairs(FHitResult& TraceHitResult);
 
+	UFUNCTION(Server, Reliable)
+	void ServerReload();
 private:
 	class ABlasterCharacter* Character;
 	class ABlasterPlayerController* Controller;

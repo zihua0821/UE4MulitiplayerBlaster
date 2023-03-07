@@ -24,6 +24,7 @@ public:
 	void PlayFireMontage(bool bAiming);
 	void PlayElimMontage();
 	void PlayHitReactMontage();
+	void PlayReloadMontage();
 	void Elim();
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastElim();
@@ -40,6 +41,7 @@ protected:
 	void CrouchButtonReleased();
 	void AimButtonPressed();
 	void AimButtonReleased();
+	void ReloadButtonPressed();
 
 	void AimOffset(float DeltaTime);
 
@@ -90,6 +92,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Combat)
 	UAnimMontage* ElimMontage;
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	UAnimMontage* ReloadMontage;
 	
 	void HideCameraIfCharacterClose();
 
