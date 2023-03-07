@@ -91,6 +91,8 @@ private:
 	void FireTimerFinished();
 
 	void Fire();
+
+	bool CanFire();
 public:	
 	FVector HitTarget;
 		
