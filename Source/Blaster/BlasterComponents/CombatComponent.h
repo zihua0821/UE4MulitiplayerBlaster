@@ -122,6 +122,10 @@ private:
 	void OnRep_CombatState();
 
 	void HandleReload();
+
+	int32 AmountToReload();
+
+	void UpdateAmmoValues();
 public:	
 	FVector HitTarget;
 		

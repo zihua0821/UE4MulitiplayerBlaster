@@ -580,7 +580,11 @@ void ABlasterCharacter::Tick(float DeltaTime)
 
 		Combat->SetHUDCrosshairs(DeltaTime);
 		Combat->InterpFOV(DeltaTime);
-		
+		if (Combat->EquippedWeapon)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Ammo %d"), Combat->EquippedWeapon->GetAmmo());
+		}
 	}
 	PollInit();
+	
 }

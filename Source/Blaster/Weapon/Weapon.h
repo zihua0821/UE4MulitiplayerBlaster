@@ -29,6 +29,7 @@ public:
 	void ShowPickupWidget(bool bShowWidget);
 	virtual void Fire(const FVector& HitTarget);
 	void Dropped();
+	void AddAmmo(int32 AddToAmmo);
 
 	UPROPERTY(EditAnywhere, Category = Crosshairs)
 	class UTexture2D* CrosshairsCenter;
@@ -118,6 +119,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	EweaponType WeaponType;
+
 public:	
 	void SetWeaponState(EWeaponState State);
 	FORCEINLINE USphereComponent* GetAreaSphere() const {return AreaSphere;}
@@ -126,6 +128,8 @@ public:
 	FORCEINLINE float GetZoomInterpSpeed() const { return ZoomInterpSpeed;}
 	FORCEINLINE bool IsEmpty() const { return Ammo <=0;}
 	FORCEINLINE EweaponType GetWeaponType() const { return WeaponType;}
+	FORCEINLINE int32 GetAmmo() const { return Ammo;}
+	FORCEINLINE int32 GetMagCapacity() const { return MagCapacity;}
 };
 
 
