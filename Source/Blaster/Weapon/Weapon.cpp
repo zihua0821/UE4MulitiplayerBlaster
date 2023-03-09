@@ -117,8 +117,10 @@ void AWeapon::Dropped()
 
 void AWeapon::AddAmmo(int32 AddToAmmo)
 {
-	Ammo = FMath::Clamp(Ammo - AddToAmmo, 0, MagCapacity);
+	Ammo = FMath::Clamp(Ammo + AddToAmmo, 0, MagCapacity);
 	SetHUDAmmo();
+	UE_LOG(LogTemp, Warning, TEXT("Add %d"), AddToAmmo);
+	UE_LOG(LogTemp, Warning, TEXT("AddCur %d"), Ammo);
 }
 
 void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -197,7 +199,12 @@ void AWeapon::SpendRound()
 {
 	Ammo = FMath::Clamp(Ammo - 1, 0, MagCapacity);
 	SetHUDAmmo();
+	UE_LOG(LogTemp, Warning, TEXT("Spend 1"));
+	UE_LOG(LogTemp, Warning, TEXT("Spend %d"), Ammo);
+
 }
+
+
 
 void AWeapon::SetWeaponState(EWeaponState State)
 {

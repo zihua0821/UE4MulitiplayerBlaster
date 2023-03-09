@@ -187,7 +187,24 @@ void UCombatComponent::UpdateAmmoValues()
 	{
 		Controller->SetHUDCarriedAmmo(CarriedAmmo);
 	}
-	EquippedWeapon->AddAmmo(-ReloadAmount);
+	// EquippedWeapon->AddAmmo(ReloadAmount);
+	ServerReloadAmmo(ReloadAmount);
+}
+
+
+void UCombatComponent::ServerReloadAmmo_Implementation(int32 AmmoAmount)
+{
+	MulticastReloadAmmo(AmmoAmount);
+}
+
+void UCombatComponent::MulticastReloadAmmo_Implementation(int32 AmmoAmount)
+{
+	if (EquippedWeapon == nullptr)
+	{
+		return;
+	}
+	EquippedWeapon->AddAmmo(AmmoAmount);
+
 }
 
 void UCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
