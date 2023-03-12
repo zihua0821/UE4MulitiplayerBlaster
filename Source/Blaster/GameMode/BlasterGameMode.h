@@ -6,6 +6,11 @@
 #include "GameFramework/GameMode.h"
 #include "BlasterGameMode.generated.h"
 
+namespace MatchState
+{
+	extern BLASTER_API const FName Cooldown; 
+}
+
 /**
  * 
  */
@@ -24,6 +29,9 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly)
 	float MatchTime = 120.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	float CooldownTime = 10.f;
 	
 	float LevelStartingTime = 0.f;
 protected:
