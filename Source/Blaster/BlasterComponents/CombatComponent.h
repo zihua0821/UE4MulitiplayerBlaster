@@ -32,6 +32,9 @@ public:
 	void SetHUDCrosshairs(float DeltaTime);
 	void InterpFOV(float DeltaTime);
 
+	void FireButtonPressed(bool bPressed);
+
+
 protected:
 	virtual void BeginPlay() override;
 	void SetAiming(bool bIsAiming);
@@ -42,7 +45,6 @@ protected:
 	UFUNCTION()
 	void OnRep_EquippedWeapon();
 
-	void FireButtonPressed(bool bPressed);
 
 	UFUNCTION(Server, Reliable)
 	void ServerFire(const FVector_NetQuantize& TraceHitTarget);
