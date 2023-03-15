@@ -18,11 +18,20 @@ public:
 	virtual void Fire(const FVector& HitTarget) override;
 private:
 	UPROPERTY(EditAnywhere)
-	float Damage = 20.f;
+	float Damage = 30.f;
 
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* ImpactParticles;
 
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* BeamParticles;
+
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* MuzzleFlash;
+
+	UPROPERTY(EditAnywhere)
+	USoundCue* FireSound;
+
+	UPROPERTY(EditAnywhere)
+	USoundCue* HitSound;
 };
