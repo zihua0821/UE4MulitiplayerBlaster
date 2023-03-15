@@ -147,6 +147,7 @@ void UCombatComponent::InitializeCarriedAmmo()
 	CarriedAmmoMap.Emplace(EweaponType::EWT_RocketLauncher, StartingRocketAmmo);
 	CarriedAmmoMap.Emplace(EweaponType::EWT_Pistol, StartingPistolAmmo);
 	CarriedAmmoMap.Emplace(EweaponType::EWT_SubmachineGun, StartingSMGAmmo);
+	CarriedAmmoMap.Emplace(EweaponType::EWT_Shotgun, StartingShotgunAmmo);
 }
 
 void UCombatComponent::OnRep_CombatState()
