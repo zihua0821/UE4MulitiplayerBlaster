@@ -121,7 +121,7 @@ private:
 	class ABlasterPlayerController* BlasterOwnerController;
 
 	UPROPERTY(EditAnywhere)
-	EweaponType WeaponType;
+	EWeaponType WeaponType;
 
 public:	
 	void SetWeaponState(EWeaponState State);
@@ -130,7 +130,7 @@ public:
 	FORCEINLINE float GetZoomedFOV() const { return ZoomedFOV;}
 	FORCEINLINE float GetZoomInterpSpeed() const { return ZoomInterpSpeed;}
 	FORCEINLINE bool IsEmpty() const { return Ammo <=0;}
-	FORCEINLINE EweaponType GetWeaponType() const { return WeaponType;}
+	FORCEINLINE EWeaponType GetWeaponType() const { return WeaponType;}
 	FORCEINLINE int32 GetAmmo() const { return Ammo;}
 	FORCEINLINE void SetAmmo(int32 InAmmo)  { Ammo = InAmmo;}
 	FORCEINLINE int32 GetMagCapacity() const { return MagCapacity;}

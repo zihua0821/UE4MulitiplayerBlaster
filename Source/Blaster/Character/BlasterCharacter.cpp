@@ -174,19 +174,22 @@ void ABlasterCharacter::PlayReloadMontage()
 		FName SectionName;
 		switch (Combat->EquippedWeapon->GetWeaponType())
 		{
-		case EweaponType::EWT_AssaultRifle:
+		case EWeaponType::EWT_AssaultRifle:
 			SectionName = FName("Rifle");
 			break;
-		case EweaponType::EWT_RocketLauncher:
+		case EWeaponType::EWT_RocketLauncher:
 			SectionName = FName("Rifle");
 			break;
-		case EweaponType::EWT_Pistol:
+		case EWeaponType::EWT_Pistol:
 			SectionName = FName("Rifle");
 			break;
-		case EweaponType::EWT_SubmachineGun:
+		case EWeaponType::EWT_SubmachineGun:
 			SectionName = FName("Rifle");
 			break;
-		case EweaponType::EWT_Shotgun:
+		case EWeaponType::EWT_Shotgun:
+			SectionName = FName("Rifle");
+			break;
+		case EWeaponType::EWT_SniperRifle:
 			SectionName = FName("Rifle");
 			break;
 		}

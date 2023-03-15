@@ -181,7 +181,7 @@ void AWeapon::OnRep_WeaponState()
 		WeaponMesh->SetSimulatePhysics(false);
 		WeaponMesh->SetEnableGravity(false);
 		WeaponMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		if (WeaponType == EweaponType::EWT_SubmachineGun)
+		if (WeaponType == EWeaponType::EWT_SubmachineGun)
 		{
 			WeaponMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 			WeaponMesh->SetEnableGravity(true);
@@ -227,7 +227,7 @@ void AWeapon::SetWeaponState(EWeaponState State)
 		WeaponMesh->SetSimulatePhysics(false);
 		WeaponMesh->SetEnableGravity(false);
 		WeaponMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		if (WeaponType == EweaponType::EWT_SubmachineGun)
+		if (WeaponType == EWeaponType::EWT_SubmachineGun)
 		{
 			WeaponMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 			WeaponMesh->SetEnableGravity(true);

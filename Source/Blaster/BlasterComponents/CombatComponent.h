@@ -115,10 +115,10 @@ private:
 	UFUNCTION()
 	void OnRep_CarriedAmmo();
 
-	TMap<EweaponType, int32> CarriedAmmoMap;
+	TMap<EWeaponType, int32> CarriedAmmoMap;
 
 	UPROPERTY(EditAnywhere)
-	int32 StartingARAmmo = 30;
+	int32 StartingARAmmo = 0;
 
 	UPROPERTY(EditAnywhere)
 	int32 StartingRocketAmmo = 0;
@@ -127,10 +127,14 @@ private:
 	int32 StartingPistolAmmo = 0;
 	
 	UPROPERTY(EditAnywhere)
-	int32 StartingSMGAmmo = 40;
+	int32 StartingSMGAmmo = 0;
 
 	UPROPERTY(EditAnywhere)
 	int32 StartingShotgunAmmo = 0;
+	
+	UPROPERTY(EditAnywhere)
+	int32 StartingSniperAmmo = 0;
+	
 	
 	void InitializeCarriedAmmo();
 
