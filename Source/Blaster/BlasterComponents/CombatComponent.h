@@ -33,7 +33,10 @@ public:
 
 	void FireButtonPressed(bool bPressed);
 
+	UFUNCTION(BlueprintCallable)
+	void ShotgunShellReload();
 
+	void JumpToShotgunEnd();
 protected:
 	virtual void BeginPlay() override;
 	void SetAiming(bool bIsAiming);
@@ -152,6 +155,7 @@ private:
 	int32 AmountToReload();
 
 	void UpdateAmmoValues();
+	void UpdateShotgunAmmoValues();
 public:	
 	FVector HitTarget;
 		

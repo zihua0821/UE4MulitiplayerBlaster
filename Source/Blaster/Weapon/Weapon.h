@@ -129,7 +129,8 @@ public:
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() const {return WeaponMesh;}
 	FORCEINLINE float GetZoomedFOV() const { return ZoomedFOV;}
 	FORCEINLINE float GetZoomInterpSpeed() const { return ZoomInterpSpeed;}
-	FORCEINLINE bool IsEmpty() const { return Ammo <=0;}
+	FORCEINLINE bool IsEmpty() const { return Ammo <= 0;}
+	FORCEINLINE bool IsFull() const { return Ammo == MagCapacity;}
 	FORCEINLINE EWeaponType GetWeaponType() const { return WeaponType;}
 	FORCEINLINE int32 GetAmmo() const { return Ammo;}
 	FORCEINLINE void SetAmmo(int32 InAmmo)  { Ammo = InAmmo;}
