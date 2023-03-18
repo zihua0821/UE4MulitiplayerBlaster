@@ -60,6 +60,8 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	class USoundCue* EquipSound;
+	
+	void EnableCustomDepth(bool bEnable);
 protected:
 	virtual void BeginPlay() override;
 
