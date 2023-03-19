@@ -27,6 +27,7 @@ public:
 	void PlayElimMontage();
 	void PlayHitReactMontage();
 	void PlayReloadMontage();
+	void PlayThrowGrenadeMontage();
 	void Elim();
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastElim();
@@ -63,6 +64,8 @@ protected:
 
 	void PollInit();
 	void RotateInPlace(float DeltaTime);
+
+	void GrenadeButtonPressed();
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = Camera)
@@ -105,6 +108,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Combat)
 	UAnimMontage* ReloadMontage;
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	UAnimMontage* ThrowGrenadeMontage;
 	
 	void HideCameraIfCharacterClose();
 

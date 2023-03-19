@@ -37,6 +37,9 @@ public:
 	void ShotgunShellReload();
 
 	void JumpToShotgunEnd();
+
+	UFUNCTION(BlueprintCallable)
+	void ThrowGrenadeFinished();
 protected:
 	virtual void BeginPlay() override;
 	void SetAiming(bool bIsAiming);
@@ -64,6 +67,11 @@ protected:
 
 	UFUNCTION(Server, Reliable)
 	void ServerReload();
+
+	void ThrowGrenade();
+
+	UFUNCTION(Server, Reliable)
+	void ServerThrowGrenade();
 private:
 	class ABlasterCharacter* Character;
 	class ABlasterPlayerController* Controller;
