@@ -75,7 +75,7 @@ Plugins/*/Intermediate/*
 DerivedDataCache/*
 
 Plugins/Developer/RiderLink/
-GameAssets/
-
-Content/LearningKit_Games/*
-Content/MilitaryWeapSilver/*
+#GameAssets/
+#
+#Content/LearningKit_Games/*
+#Content/MilitaryWeapSilver/*
