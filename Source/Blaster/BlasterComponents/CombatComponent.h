@@ -181,8 +181,20 @@ private:
 
 	void UpdateAmmoValues();
 	void UpdateShotgunAmmoValues();
+
+	UPROPERTY(ReplicatedUsing = OnRep_Grenades)
+	int32 Grenades = 4;
+
+	UFUNCTION()
+	void OnRep_Grenades();
+
+	UPROPERTY(EditAnywhere)
+	int32 MaxGrenades = 4;
+
+	void UpdateHUDGrenades();
 public:	
 	FVector HitTarget;
+	FORCEINLINE int32 GetGrenades() const { return Grenades; }
 		
 };
 
