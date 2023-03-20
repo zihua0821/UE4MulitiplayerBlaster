@@ -164,6 +164,9 @@ private:
 	class USoundCue* ElimBotSound;
 
 	class ABlasterPlayerState* BlasterPlayerState;
+
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* AttachedGrenade;
 public:	
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	bool IsWeaponEquipped();
