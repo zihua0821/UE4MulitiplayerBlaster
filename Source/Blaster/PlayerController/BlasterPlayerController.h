@@ -15,6 +15,7 @@ class BLASTER_API ABlasterPlayerController : public APlayerController
 	GENERATED_BODY()
 public:
 	void SetHUDHealth(float Health, float MaxHealth);
+	void SetHUDShield(float Shield, float MaxShield);
 	void SetHUDScore(float Score);
 	void SetHUDDefeats(int32 Defeats);
 	void SetHUDWeaponAmmo(int32 Ammo);
@@ -83,6 +84,8 @@ private:
 	float HUDScore;
 	int32 HUDDefeats;
 	int32 HUDGrenades;
+	float HUDShield;
+	float HUDMaxShield;
 };
 
 
