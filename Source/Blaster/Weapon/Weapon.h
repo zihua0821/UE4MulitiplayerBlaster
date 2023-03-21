@@ -11,8 +11,10 @@ enum class EWeaponState : uint8
 {
 	EWS_Initial UMETA(DisplayName = "Initial State"),
 	EWS_Equipped UMETA(DisplayName = "Equipped"),
+	EWS_EquippedSecondary UMETA(DisplayName = "Equipped Secondary"),
 	EWS_Dropped UMETA(DisplayName = "Dropped"),
-	EWS_MAX UMETA(DisplayName = "DefaultMax"),
+	
+	EWS_MAX UMETA(DisplayName = "DefaultMax")
 };
 
 UCLASS()
@@ -66,6 +68,11 @@ public:
 	bool bDestroyWeapon = false;
 protected:
 	virtual void BeginPlay() override;
+
+	virtual void OnWeaponStateSet();
+	virtual void OnEquipped();
+	virtual void OnDropped();
+	virtual void OnEquippedSecondary();
 
 	UFUNCTION()
 	virtual void OnSphereOverlap(
