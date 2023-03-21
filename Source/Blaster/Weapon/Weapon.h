@@ -62,6 +62,8 @@ public:
 	class USoundCue* EquipSound;
 	
 	void EnableCustomDepth(bool bEnable);
+	
+	bool bDestroyWeapon = false;
 protected:
 	virtual void BeginPlay() override;
 
