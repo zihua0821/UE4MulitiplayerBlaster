@@ -89,6 +89,10 @@ void ABlasterCharacter::BeginPlay()
 
 	UpdateHUDHealth();
 	UpdateHUDShield();
+	if (Combat)
+	{
+		Combat->UpdateHUDGrenades();
+	}
 	if (HasAuthority())
 	{
 		OnTakeAnyDamage.AddDynamic(this, &ABlasterCharacter::ReceiveDamage);
@@ -480,8 +484,8 @@ void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const 
 		}
 		else
 		{
-			Shield = 0.f;
 			DamageToHealth = FMath::Clamp(DamageToHealth - Shield, 0.f, Damage);
+			Shield = 0.f;
 		}
 	}
 
@@ -602,6 +606,8 @@ void ABlasterCharacter::UpdateHUDShield()
 		BlasterPlayerController->SetHUDShield(Shield, MaxShield);
 	}
 }
+
+
 
 void ABlasterCharacter::PollInit()
 {
