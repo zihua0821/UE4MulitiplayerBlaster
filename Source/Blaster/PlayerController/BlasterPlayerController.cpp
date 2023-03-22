@@ -196,6 +196,24 @@ void ABlasterPlayerController::SetHUDGrenades(int32 Grenades)
 	}
 }
 
+void ABlasterPlayerController::SetHUDPingText(int32 Ping)
+{
+	BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
+	bool bHUDValid = BlasterHUD &&
+		BlasterHUD->CharacterOverlay &&
+		BlasterHUD->CharacterOverlay->PingText;
+	if (bHUDValid)
+	{
+		FString PingText = FString::Printf(TEXT("%d"), Ping);
+		BlasterHUD->CharacterOverlay->PingText->SetText(FText::FromString(PingText));
+	}
+	else
+	{
+		bInitializePing = true;
+		HUDPing = Ping;
+	}
+}
+
 void ABlasterPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
@@ -216,6 +234,7 @@ void ABlasterPlayerController::Tick(float DeltaSeconds)
 	CheckTimeSync(DeltaSeconds);
 	PollInit();
 	CheckPing(DeltaSeconds);
+	ShowPing(DeltaSeconds);
 }
 
 void ABlasterPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -297,6 +316,21 @@ void ABlasterPlayerController::CheckPing(float DeltaTime)
 			StopHighPingWarning();
 		}
 	}
+}
+
+void ABlasterPlayerController::ShowPing(float DeltaTime)
+{
+	ShowPingRunningTime += DeltaTime;
+	if (ShowPingRunningTime > ShowPingFrequency)
+	{
+		PlayerState = PlayerState == nullptr ? GetPlayerState<APlayerState>() : PlayerState;
+		if (PlayerState)
+		{
+			SetHUDPingText(PlayerState->GetPing() * 4);
+		}
+		ShowPingRunningTime = 0.f;
+	}
+	
 }
 
 void ABlasterPlayerController::ServerCheckMatchState_Implementation()
@@ -511,6 +545,7 @@ void ABlasterPlayerController::PollInit()
 				if (bInitializeDefeats) SetHUDDefeats(HUDDefeats);
 				if (bInitializeCarriedAmmo) SetHUDCarriedAmmo(HUDCarriedAmmo);
 				if (bInitializeWeaponAmmo) SetHUDWeaponAmmo(HUDWeaponAmmo);
+				if (bInitializePing) SetHUDPingText(HUDPing);
 
 				ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(GetPawn());
 				if (BlasterCharacter && BlasterCharacter->GetCombat())

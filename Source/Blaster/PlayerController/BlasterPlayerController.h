@@ -23,6 +23,7 @@ public:
 	void SetHUDMatchCountdownText(float CountdownTime);
 	void SetHUDAnnouncementCountdown(float CountdownTime);
 	void SetHUDGrenades(int32 Grenades);
+	void SetHUDPingText(int32 Ping);
 	virtual void OnPossess(APawn* InPawn) override;
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
@@ -60,6 +61,7 @@ protected:
 	void HighPingWarning();
 	void StopHighPingWarning();
 	void CheckPing(float DeltaTime);
+	void ShowPing(float DeltaTime);
 private:
 	UPROPERTY()
 	class ABlasterHUD* BlasterHUD;
@@ -99,6 +101,12 @@ private:
 	float HUDWeaponAmmo;
 	bool bInitializeWeaponAmmo = false;
 
+	int32 HUDPing;
+	bool bInitializePing = false;
+	UPROPERTY(EditAnywhere)
+	float ShowPingFrequency = 1.f;
+	float ShowPingRunningTime = 0.f;
+	
 	float HighPingRunningTime = 0.f;
 
 	UPROPERTY(EditAnywhere)
@@ -112,5 +120,6 @@ private:
 	UPROPERTY(EditAnywhere)
 	float HighPingThreshold = 50.f;
 };
+
 
 
