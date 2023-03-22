@@ -186,10 +186,8 @@ void AWeapon::Fire(const FVector& HitTarget)
 			}
 		}
 	}
-	if (HasAuthority())
-	{
-		SpendRound();
-	}
+	SpendRound();
+
 }
 
 void AWeapon::Dropped()
