@@ -73,6 +73,12 @@ protected:
 
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastReloadAmmo(int32 AmmoAmount);
+
+	UFUNCTION(Server, Reliable)
+	void ServerShotgunFire(const TArray<FVector_NetQuantize>& TraceHitTargets);
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastShotgunFire(const TArray<FVector_NetQuantize>& TraceHitTargets);
 	
 	void TraceUnderCrosshairs(FHitResult& TraceHitResult);
 
@@ -149,7 +155,8 @@ private:
 	void FireHitScanWeapon();
 	void FireShotgun();
 	void LocalFire(const FVector_NetQuantize& TraceHitTarget);
-
+	void ShotgunLocalFire(const TArray<FVector_NetQuantize>& TraceHitTargets);
+	
 	bool CanFire();
 
 	UPROPERTY(ReplicatedUsing = OnRep_CarriedAmmo)
