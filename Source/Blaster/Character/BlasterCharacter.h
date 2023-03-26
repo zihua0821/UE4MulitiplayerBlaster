@@ -288,7 +288,7 @@ public:
 		if (Combat == nullptr) return false;
 		return Combat->bLocallyReloading;
 	}
-
+	FORCEINLINE ULagCompensationComponent* GetLagCompensation() const { return LagCompensation; }
 };
 
 
