@@ -204,8 +204,7 @@ void AWeapon::AddAmmo(int32 AddToAmmo)
 {
 	Ammo = FMath::Clamp(Ammo + AddToAmmo, 0, MagCapacity);
 	SetHUDAmmo();
-	UE_LOG(LogTemp, Warning, TEXT("Add %d"), AddToAmmo);
-	UE_LOG(LogTemp, Warning, TEXT("AddCur %d"), Ammo);
+	ClientAddAmmo(AddToAmmo);
 }
 
 FVector AWeapon::TraceEndWithScatter(const FVector& HitTarget)
@@ -289,8 +288,19 @@ void AWeapon::OnRep_WeaponState()
 	OnWeaponStateSet();
 }
 
-void AWeapon::OnRep_Ammo()
+void AWeapon::ClientUpdateAmmo_Implementation(int32 ServerAmmo)
 {
+	if (HasAuthority()) return;
+	Ammo = ServerAmmo;
+	--Sequence;
+	Ammo -= Sequence;
+	SetHUDAmmo();
+}
+
+void AWeapon::ClientAddAmmo_Implementation(int32 AmmoToAdd)
+{
+	if (HasAuthority()) return;
+	Ammo = FMath::Clamp(Ammo + AmmoToAdd, 0, MagCapacity);
 	BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABlasterCharacter>(GetOwner()) : BlasterOwnerCharacter;
 	if (BlasterOwnerCharacter && BlasterOwnerCharacter->GetCombat() && IsFull())
 	{
@@ -303,7 +313,14 @@ void AWeapon::SpendRound()
 {
 	Ammo = FMath::Clamp(Ammo - 1, 0, MagCapacity);
 	SetHUDAmmo();
-
+	if (HasAuthority())
+	{
+		ClientUpdateAmmo(Ammo);
+	}
+	else
+	{
+		++Sequence;
+	}
 }
 
 
