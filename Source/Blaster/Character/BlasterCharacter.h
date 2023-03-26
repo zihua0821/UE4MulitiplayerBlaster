@@ -210,7 +210,8 @@ public:
 	FORCEINLINE float GetShield() const { return Shield; }
 	FORCEINLINE void SetShield(float Amount) { Shield = Amount; }
 	FORCEINLINE float GetMaxShield() const { return MaxShield; }
-	FORCEINLINE ECombatState GetCombatState() const {
+	FORCEINLINE ECombatState GetCombatState() const
+	{
 		if (Combat == nullptr)
 		{
 			return ECombatState::ECS_Max;
@@ -222,6 +223,12 @@ public:
 	FORCEINLINE UAnimMontage* GetReloadMontage() const { return ReloadMontage; }
 	FORCEINLINE UStaticMeshComponent* GetAttachedGrenade() const { return AttachedGrenade; }
 	FORCEINLINE UBuffComponent* GetBuff() const { return Buff; }
+	FORCEINLINE bool IsLocallyReloading() const
+	{
+		if (Combat == nullptr) return false;
+		return Combat->bLocallyReloading;
+	}
+
 };
 
 
