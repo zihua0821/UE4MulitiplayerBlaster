@@ -25,9 +25,7 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* ImpactParticles;
-	
-	UPROPERTY(EditAnywhere)
-	float Damage = 30.f;
+
 	
 private:
 	
