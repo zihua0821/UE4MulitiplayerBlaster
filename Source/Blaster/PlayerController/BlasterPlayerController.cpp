@@ -16,7 +16,6 @@
 #include "Blaster/BlasterComponents/CombatComponent.h"
 #include "Blaster/GameState/BlasterGameState.h"
 #include "Blaster/PlayerState/BlasterPlayerState.h"
-#include "Blaster/Weapon/Weapon.h"
 #include "Components/Image.h"
 
 void ABlasterPlayerController::SetHUDHealth(float Health, float MaxHealth)
@@ -290,6 +289,7 @@ void ABlasterPlayerController::StopHighPingWarning()
 
 void ABlasterPlayerController::CheckPing(float DeltaTime)
 {
+	if (HasAuthority()) return;
 	HighPingRunningTime += DeltaTime;
 	if (HighPingRunningTime > CheckPingFrequency)
 	{
@@ -297,10 +297,15 @@ void ABlasterPlayerController::CheckPing(float DeltaTime)
 		if (PlayerState)
 		{
 			if (PlayerState->GetPing() * 4 > HighPingThreshold) // ping is compressed; it's actually ping / 4
-				{
+			{
 				HighPingWarning();
 				PingAnimationRunningTime = 0.f;
-				}
+				ServerReportPingStatus(true);
+			}
+			else
+			{
+				ServerReportPingStatus(false);
+			}
 		}
 		HighPingRunningTime = 0.f;
 	}
@@ -479,6 +484,11 @@ void ABlasterPlayerController::OnRep_MatchState()
 	{
 		HandleCooldown();
 	}
+}
+
+void ABlasterPlayerController::ServerReportPingStatus_Implementation(bool bHighPing)
+{
+	HighPingDelegate.Broadcast(bHighPing);
 }
 
 void ABlasterPlayerController::BeginPlay()
