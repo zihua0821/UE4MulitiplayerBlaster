@@ -28,6 +28,12 @@ public:
 	void Reload();
 	UFUNCTION(BlueprintCallable)
 	void FinishReloading();
+
+	UFUNCTION(BlueprintCallable)
+	void FinishSwap();
+
+	UFUNCTION(BlueprintCallable)
+	void FinishSwapAttachWeapons();
 	
 	void SetHUDCrosshairs(float DeltaTime);
 	void InterpFOV(float DeltaTime);

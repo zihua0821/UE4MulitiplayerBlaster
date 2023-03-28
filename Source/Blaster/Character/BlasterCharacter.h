@@ -28,6 +28,7 @@ public:
 	void PlayHitReactMontage();
 	void PlayReloadMontage();
 	void PlayThrowGrenadeMontage();
+	void PlaySwapMontage();
 	void Elim();
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastElim();
@@ -47,7 +48,8 @@ public:
 	
 	UPROPERTY()
 	TMap<FName, class UBoxComponent*> HitCollisionBoxes;
-	
+
+	bool bFinishedSwapping = false;
 protected:
 	virtual void BeginPlay() override;
 
@@ -182,6 +184,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = Combat)
 	UAnimMontage* ThrowGrenadeMontage;
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	UAnimMontage* SwapMontage;
 	
 	void HideCameraIfCharacterClose();
 
