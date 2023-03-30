@@ -56,6 +56,12 @@ public:
 	void ServerLeaveGame();
 
 	FOnLeftGame OnLeftGame;
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastGainedTheLead();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastLostTheLead();
 protected:
 	virtual void BeginPlay() override;
 
@@ -259,6 +265,12 @@ private:
 	class USoundCue* ElimBotSound;
 
 	class ABlasterPlayerState* BlasterPlayerState;
+
+	UPROPERTY(EditAnywhere)
+	class UNiagaraSystem* CrownSystem;
+
+	UPROPERTY()
+	class UNiagaraComponent* CrownComponent;
 
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* AttachedGrenade;
