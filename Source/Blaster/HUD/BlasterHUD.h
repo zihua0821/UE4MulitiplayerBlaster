@@ -45,14 +45,22 @@ public:
 	class UAnnouncement* Announcement;
 
 	void AddAnnouncment();
+
+	void AddElimAnnouncement(FString Attacker, FString Victim);
 protected:
 	virtual void BeginPlay() override;
 private:
+	UPROPERTY()
+	class APlayerController* OwningPlayer;
+	
 	FHUDPackage HUDPackage;
 
 	void DrawCrosshair(UTexture2D* Texture, FVector2D ViewportCenter, FVector2D Spread, FLinearColor CrosshairColor);
 	
 	float CrosshairSpreadMax = 16.f;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UElimAnnouncement> ElimAnnouncementClass;
 public:
 	FORCEINLINE void SetHUDPackage(const FHUDPackage& Package) { HUDPackage = Package;}
 };
