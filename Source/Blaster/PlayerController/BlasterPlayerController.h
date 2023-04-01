@@ -96,10 +96,10 @@ private:
 	class UReturnToMainMenu* ReturnToMainMenu;
 
 	bool bReturnToMainMenuOpen = false;
-
+	
 	UPROPERTY()
 	class ABlasterGameMode* BlasterGameMode;
-
+	
 	float LevelStartingTime = 0.f;
 	float MatchTime = 0.f;
 	float WarmupTime = 0.f;
