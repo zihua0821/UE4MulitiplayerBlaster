@@ -95,6 +95,8 @@ protected:
 
 	void DropOrDestroyWeapon(AWeapon* Weapon);
 	void DropOrDestroyWeapons();
+	void SetSpawnPoint();
+	void OnPlayerStateInitialized();
 
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* head;
