@@ -1,8 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "BlasterHUD.h"
-
 #include "Announcement.h"
 #include "GameFramework/PlayerController.h"
 #include "Blueprint/UserWidget.h"
@@ -19,9 +15,12 @@ void ABlasterHUD::DrawHUD()
 	FVector2D ViewportSize;
 	if (GEngine)
 	{
+		//计算视口中心
 		GEngine->GameViewport->GetViewportSize(ViewportSize);
 		const FVector2D ViewportCenter(ViewportSize.X / 2.f, ViewportSize.Y / 2.f);
+		//计算当前准星伸展量
 		float SpreadScaled = CrosshairSpreadMax * HUDPackage.CrosshairSpread;
+		//绘制准星
 		if (HUDPackage.CrosshairsCenter)
 		{
 			FVector2D Spread(0.f, 0.f);
@@ -52,6 +51,7 @@ void ABlasterHUD::DrawHUD()
 
 void ABlasterHUD::AddAnnouncment()
 {
+	//创建公告控件并且添加到视口中
 	APlayerController* PlayerController = GetOwningPlayerController();
 	if (PlayerController && AnnouncementClass)
 	{
@@ -62,6 +62,7 @@ void ABlasterHUD::AddAnnouncment()
 
 void ABlasterHUD::AddElimAnnouncement(FString Attacker, FString Victim)
 {
+	//创建玩家淘汰公告控件并且添加到视口中
 	OwningPlayer = OwningPlayer == nullptr ? GetOwningPlayerController() : OwningPlayer;
 	if (OwningPlayer && ElimAnnouncementClass)
 	{
@@ -70,7 +71,7 @@ void ABlasterHUD::AddElimAnnouncement(FString Attacker, FString Victim)
 		{
 			ElimAnnouncementWidget->SetElimAnnouncementText(Attacker, Victim);
 			ElimAnnouncementWidget->AddToViewport();
-
+			//列表显示玩家淘汰公告文本
 			for (UElimAnnouncement* Msg : ElimMessages)
 			{
 				if (Msg && Msg->AnnouncementBox)
@@ -87,11 +88,10 @@ void ABlasterHUD::AddElimAnnouncement(FString Attacker, FString Victim)
 					}
 				}
 			}
-
-
-
+			//添加当前文本到数组中
 			ElimMessages.Add(ElimAnnouncementWidget);
 
+			//启动定时器，事件结束销毁指定文本控件
 			FTimerHandle ElimMsgTimer;
 			FTimerDelegate ElimMsgDelegate;
 			ElimMsgDelegate.BindUFunction(this, FName("ElimAnnouncementTimerFinished"), ElimAnnouncementWidget);
@@ -113,6 +113,7 @@ void ABlasterHUD::BeginPlay()
 
 void ABlasterHUD::AddCharacterOverlay()
 {
+	//创建玩家覆盖层控件并且添加到视口中
 	APlayerController* PlayerController = GetOwningPlayerController();
 	if (PlayerController && CharacterOverlayClass)
 	{
@@ -123,12 +124,14 @@ void ABlasterHUD::AddCharacterOverlay()
 
 void ABlasterHUD::DrawCrosshair(UTexture2D* Texture, FVector2D ViewportCenter, FVector2D Spread, FLinearColor CrosshairColor)
 {
+	//计算当前准星伸展量
 	const float TextureWidth = Texture->GetSizeX();
 	const float TextureHeight = Texture->GetSizeY();
 	const FVector2D TextureDrawPoint(
 		ViewportCenter.X - (TextureWidth / 2.f) + Spread.X,
 		ViewportCenter.Y - (TextureHeight/ 2.f) + Spread.Y
 	);
+	//重新绘制准星
 	DrawTexture(
 		Texture,
 		TextureDrawPoint.X,
@@ -145,6 +148,7 @@ void ABlasterHUD::DrawCrosshair(UTexture2D* Texture, FVector2D ViewportCenter, F
 
 void ABlasterHUD::ElimAnnouncementTimerFinished(UElimAnnouncement* MsgToRemove)
 {
+	//计时器结束销毁淘汰公告
 	if (MsgToRemove)
 	{
 		MsgToRemove->RemoveFromParent();

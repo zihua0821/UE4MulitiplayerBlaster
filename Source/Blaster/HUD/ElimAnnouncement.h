@@ -1,24 +1,33 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "ElimAnnouncement.generated.h"
 
+class UHorizontalBox;
+class UTextBlock;
+
 /**
- * 
+ * 玩家淘汰公告HUD控件
  */
 UCLASS()
 class BLASTER_API UElimAnnouncement : public UUserWidget
 {
 	GENERATED_BODY()
 public:
+
+	/**
+	 * 设置玩家淘汰公告
+	 * @param AttackerName 淘汰者名字
+	 * @param VictimName 被淘汰者名字
+	 */
 	void SetElimAnnouncementText(FString AttackerName, FString VictimName);
 
+	//水平盒绑定
 	UPROPERTY(meta = (BindWidget))
-	class UHorizontalBox* AnnouncementBox;
+	UHorizontalBox* AnnouncementBox;
 
+	//公告文本
 	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* AnnouncementText;
+	UTextBlock* AnnouncementText;
 };
