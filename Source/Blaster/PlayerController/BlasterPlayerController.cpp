@@ -1,8 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "BlasterPlayerController.h"
-
 #include "Blaster/Character/BlasterCharacter.h"
 #include "Blaster/GameMode/BlasterGameMode.h"
 #include "Blaster/HUD/Announcement.h"
@@ -219,6 +215,7 @@ void ABlasterPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
+	//控制玩家时设置更新生命值，用于重生时
 	ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(InPawn);
 	if (BlasterCharacter)
 	{
@@ -242,6 +239,7 @@ void ABlasterPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProper
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
+	//注册复制变量
 	DOREPLIFETIME(ABlasterPlayerController, MatchState);
 	DOREPLIFETIME(ABlasterPlayerController, bShowTeamScores);
 }
@@ -308,11 +306,11 @@ void ABlasterPlayerController::SetHUDBlueTeamScore(int32 BlueScore)
 
 void ABlasterPlayerController::OnRep_ShowTeamScores()
 {
-	if (bShowTeamScores)
+	if (bShowTeamScores)//是团队游戏则初始化队伍比分
 	{
 		InitTeamScores();
 	}
-	else
+	else//否则隐藏队伍比分
 	{
 		HideTeamScores();
 	}
@@ -323,19 +321,19 @@ FString ABlasterPlayerController::GetInfoText(const TArray<ABlasterPlayerState*>
 	ABlasterPlayerState* BlasterPlayerState = GetPlayerState<ABlasterPlayerState>();
 	if (BlasterPlayerState == nullptr) return FString();
 	FString InfoTextString;
-	if (Players.Num() == 0)
+	if (Players.Num() == 0)//没有玩家时
 	{
 		InfoTextString = Announcement::ThereIsNoWinner;
 	}
-	else if (Players.Num() == 1 && Players[0] == BlasterPlayerState)
+	else if (Players.Num() == 1 && Players[0] == BlasterPlayerState)//只有一个玩家且是自己时
 	{
 		InfoTextString = Announcement::YouAreTheWinner;
 	}
-	else if (Players.Num() == 1)
+	else if (Players.Num() == 1)//有一个玩家时
 	{
 		InfoTextString = FString::Printf(TEXT("Winner: \n%s"), *Players[0]->GetPlayerName());
 	}
-	else if (Players.Num() > 1)
+	else if (Players.Num() > 1)//玩家大于1时
 	{
 		InfoTextString = Announcement::PlayersTiedForTheWin;
 		InfoTextString.Append(FString("\n"));
@@ -352,15 +350,15 @@ FString ABlasterPlayerController::GetTeamsInfoText(ABlasterGameState* BlasterGam
 {
 	if (BlasterGameState == nullptr) return FString();
 	FString InfoTextString;
-
+	//获取两队比分
 	const int32 RedTeamScore = BlasterGameState->RedTeamScore;
 	const int32 BlueTeamScore = BlasterGameState->BlueTeamScore;
 
-	if (RedTeamScore == 0 && BlueTeamScore == 0)
+	if (RedTeamScore == 0 && BlueTeamScore == 0)//两队都为0分
 	{
 		InfoTextString = Announcement::ThereIsNoWinner;
 	}
-	else if (RedTeamScore == BlueTeamScore)
+	else if (RedTeamScore == BlueTeamScore)//两队比分相等
 	{
 		InfoTextString = FString::Printf(TEXT("%s\n"), *Announcement::TeamsTiedForTheWin);
 		InfoTextString.Append(Announcement::RedTeam);
@@ -368,14 +366,14 @@ FString ABlasterPlayerController::GetTeamsInfoText(ABlasterGameState* BlasterGam
 		InfoTextString.Append(Announcement::BlueTeam);
 		InfoTextString.Append(TEXT("\n"));
 	}
-	else if (RedTeamScore > BlueTeamScore)
+	else if (RedTeamScore > BlueTeamScore)//红队领先
 	{
 		InfoTextString = Announcement::RedTeamWins;
 		InfoTextString.Append(TEXT("\n"));
 		InfoTextString.Append(FString::Printf(TEXT("%s: %d\n"), *Announcement::RedTeam, RedTeamScore));
 		InfoTextString.Append(FString::Printf(TEXT("%s: %d\n"), *Announcement::BlueTeam, BlueTeamScore));
 	}
-	else if (BlueTeamScore > RedTeamScore)
+	else if (BlueTeamScore > RedTeamScore)//蓝队领先
 	{
 		InfoTextString = Announcement::BlueTeamWins;
 		InfoTextString.Append(TEXT("\n"));
@@ -388,9 +386,11 @@ FString ABlasterPlayerController::GetTeamsInfoText(ABlasterGameState* BlasterGam
 
 void ABlasterPlayerController::CheckTimeSync(float DeltaTime)
 {
+	//以固定的频率检查时间
 	TimeSyncRunningTime += DeltaTime;
 	if (IsLocalController() && TimeSyncRunningTime > TimeSyncFrequency)
 	{
+		//请求服务器时间
 		ServerRequestServerTime(GetWorld()->GetTimeSeconds());
 		TimeSyncRunningTime = 0.f;
 	}
@@ -432,26 +432,32 @@ void ABlasterPlayerController::StopHighPingWarning()
 
 void ABlasterPlayerController::CheckPing(float DeltaTime)
 {
+	//服务器不检查
 	if (HasAuthority()) return;
+	//以固定的频率检查Ping
 	HighPingRunningTime += DeltaTime;
 	if (HighPingRunningTime > CheckPingFrequency)
 	{
 		PlayerState = PlayerState == nullptr ? GetPlayerState<APlayerState>() : PlayerState;
 		if (PlayerState)
 		{
-			if (PlayerState->GetPing() * 2 > HighPingThreshold) // ping is compressed; it's actually ping / 4
+			//高延迟时显示动画
+			if (PlayerState->GetPing() * 2 > HighPingThreshold) //获取的往返Ping是经过压缩的是实际的四分之一，所有单程Ping应该*2
 			{
 				HighPingWarning();
 				PingAnimationRunningTime = 0.f;
+				//广播高Ping
 				ServerReportPingStatus(true);
 			}
 			else
 			{
+				//广播高Ping
 				ServerReportPingStatus(false);
 			}
 		}
 		HighPingRunningTime = 0.f;
 	}
+	//正常时如果正在播放高Ping动画则停止播放
 	bool bHighPingAnimationPlaying =
 		BlasterHUD && BlasterHUD->CharacterOverlay &&
 		BlasterHUD->CharacterOverlay->HighPingAnimation &&
@@ -484,6 +490,7 @@ void ABlasterPlayerController::ShowPing(float DeltaTime)
 void ABlasterPlayerController::ShowReturnToMainMenu()
 {
 	if (ReturnToMainMenuWidget == nullptr) return;
+	//动态创建指针
 	if (ReturnToMainMenu == nullptr)
 	{
 		ReturnToMainMenu = CreateWidget<UReturnToMainMenu>(this, ReturnToMainMenuWidget);
@@ -491,11 +498,11 @@ void ABlasterPlayerController::ShowReturnToMainMenu()
 	if (ReturnToMainMenu)
 	{
 		bReturnToMainMenuOpen = !bReturnToMainMenuOpen;
-		if (bReturnToMainMenuOpen)
+		if (bReturnToMainMenuOpen)//菜单未显示则显示
 		{
 			ReturnToMainMenu->MenuSetup();
 		}
-		else
+		else//菜单显示则隐藏
 		{
 			ReturnToMainMenu->MenuTearDown();
 		}
@@ -510,27 +517,27 @@ void ABlasterPlayerController::ClientElimAnnouncement_Implementation(APlayerStat
 		BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
 		if (BlasterHUD)
 		{
-			if (Attacker == Self && Victim != Self)
+			if (Attacker == Self && Victim != Self)//你淘汰了其他人
 			{
 				BlasterHUD->AddElimAnnouncement("You", Victim->GetPlayerName());
 				return;
 			}
-			if (Victim == Self && Attacker != Self)
+			if (Victim == Self && Attacker != Self)//其他人淘汰了你
 			{
 				BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), "you");
 				return;
 			}
-			if (Attacker == Victim && Attacker == Self)
+			if (Attacker == Victim && Attacker == Self)//你淘汰了你自己
 			{
 				BlasterHUD->AddElimAnnouncement("You", "yourself");
 				return;
 			}
-			if (Attacker == Victim && Attacker != Self)
+			if (Attacker == Victim && Attacker != Self)//其他人淘汰了他自己
 			{
 				BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), "themselves");
 				return;
 			}
-			BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), Victim->GetPlayerName());
+			BlasterHUD->AddElimAnnouncement(Attacker->GetPlayerName(), Victim->GetPlayerName());//其他人淘汰了其他人
 		}
 	}
 }
@@ -540,11 +547,13 @@ void ABlasterPlayerController::ServerCheckMatchState_Implementation()
 	ABlasterGameMode* GameMode = Cast<ABlasterGameMode>(UGameplayStatics::GetGameMode(this));
 	if (GameMode)
 	{
+		//将游戏模式同步
 		WarmupTime = GameMode->WarmupTime;
 		MatchTime = GameMode->MatchTime;
 		CooldownTime = GameMode->CooldownTime;
 		LevelStartingTime = GameMode->LevelStartingTime;
 		MatchState = GameMode->GetMatchState();
+		//加入进行中的游戏
 		ClientJoinMidgame(MatchState, WarmupTime, MatchTime, CooldownTime, LevelStartingTime);
 	}
 }
@@ -552,11 +561,13 @@ void ABlasterPlayerController::ServerCheckMatchState_Implementation()
 void ABlasterPlayerController::ClientJoinMidgame_Implementation(FName StateOfMatch, float Warmup, float Match, float Cooldown,
 	float StartingTime)
 {
+	//将游戏模式同步
 	WarmupTime = Warmup;
 	MatchTime = Match;
 	CooldownTime = Cooldown;
 	LevelStartingTime = StartingTime;
 	MatchState = StateOfMatch;
+	//设置游戏状态
 	OnMatchStateSet(MatchState);
 	if (BlasterHUD && MatchState == MatchState::WaitingToStart)
 	{
@@ -566,13 +577,14 @@ void ABlasterPlayerController::ClientJoinMidgame_Implementation(FName StateOfMat
 
 float ABlasterPlayerController::GetServerTime()
 {
-	return GetWorld()->GetTimeSeconds() + ClientServerDelta;
+	return GetWorld()->GetTimeSeconds() + ClientServerDelta; //游戏时间+客户端服务器之间间隔
 }
 
 void ABlasterPlayerController::ReceivedPlayer()
 {
 	Super::ReceivedPlayer();
 
+	//控制器关联时如果是本地控制的玩家，则请求服务器时间
 	if (IsLocalController())
 	{
 		ServerRequestServerTime(GetWorld()->GetTimeSeconds());
@@ -588,11 +600,11 @@ void ABlasterPlayerController::OnMatchStateSet(FName State, bool bTeamsMatch)
 		
 	}
 	
-	if (MatchState == MatchState::InProgress)
+	if (MatchState == MatchState::InProgress)//游戏时
 	{
 		HandleMatchHasStarted(bTeamsMatch);
 	}
-	else if (MatchState == MatchState::Cooldown)
+	else if (MatchState == MatchState::Cooldown)//冷却时
 	{
 		HandleCooldown();
 	}
@@ -623,10 +635,6 @@ void ABlasterPlayerController::HandleMatchHasStarted(bool bTeamsMatch)
 
 void ABlasterPlayerController::HandleCooldown()
 {
-	if (GetHUD())
-	{
-		UE_LOG(LogTemp,Warning,TEXT("GetHUD"))
-	}
 	BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
 	if (BlasterHUD)
 	{
@@ -662,6 +670,7 @@ void ABlasterPlayerController::HandleCooldown()
 
 void ABlasterPlayerController::OnRep_MatchState()
 {
+	//客户端复制变量更新时处理
 	if (MatchState == MatchState::InProgress)
 	{
 		HandleMatchHasStarted();
@@ -674,11 +683,13 @@ void ABlasterPlayerController::OnRep_MatchState()
 
 void ABlasterPlayerController::ServerReportPingStatus_Implementation(bool bHighPing)
 {
+	//向代理广播是否高Ping
 	HighPingDelegate.Broadcast(bHighPing);
 }
 
 void ABlasterPlayerController::BroadcastElim(APlayerState* Attacker, APlayerState* Victim)
 {
+	//广播重生
 	ClientElimAnnouncement(Attacker, Victim);
 }
 
@@ -687,27 +698,29 @@ void ABlasterPlayerController::BeginPlay()
 	Super::BeginPlay();
 	
 	BlasterHUD = Cast<ABlasterHUD>(GetHUD());
+	//处理中途加入
 	ServerCheckMatchState();
 }
 
 void ABlasterPlayerController::SetHUDTime()
 {
 	float TimeLeft = 0.f;
-	if (MatchState == MatchState::WaitingToStart)
+	if (MatchState == MatchState::WaitingToStart)//热身时间
 	{
 		TimeLeft = WarmupTime - GetServerTime() + LevelStartingTime;
 	}
-	else if (MatchState == MatchState::InProgress)
+	else if (MatchState == MatchState::InProgress)//游戏时间
 	{
 		TimeLeft = WarmupTime + MatchTime - GetServerTime() + LevelStartingTime;
 	}
-	else if (MatchState == MatchState::Cooldown)
+	else if (MatchState == MatchState::Cooldown)//冷却时间
 	{
 		TimeLeft = CooldownTime + WarmupTime + MatchTime - GetServerTime() + LevelStartingTime;
 	}
 	
 	uint32 SecondsLeft = FMath::CeilToInt(TimeLeft);
 
+	//如果是权威版本则设置游戏开始时间
 	if (HasAuthority())
 	{
 		if (BlasterGameMode == nullptr)
@@ -722,7 +735,7 @@ void ABlasterPlayerController::SetHUDTime()
 		}
 	}
 	
-	if (CountdownInt != SecondsLeft)
+	if (CountdownInt != SecondsLeft)//倒计时还未结束时设置时间
 	{
 		if (MatchState == MatchState::WaitingToStart || MatchState == MatchState::Cooldown)
 		{
@@ -738,6 +751,7 @@ void ABlasterPlayerController::SetHUDTime()
 
 void ABlasterPlayerController::PollInit()
 {
+	//在类初始化完成后再进行HUD的设置
 	if (CharacterOverlay == nullptr)
 	{
 		if (BlasterHUD && BlasterHUD->CharacterOverlay)
@@ -768,22 +782,29 @@ void ABlasterPlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 	if (InputComponent == nullptr) return;
 
+	//绑定按钮事件
 	InputComponent->BindAction("Quit", IE_Pressed, this, &ABlasterPlayerController::ShowReturnToMainMenu);
 }
 
 
 void ABlasterPlayerController::ServerRequestServerTime_Implementation(float TimeOfClientRequest)
 {
+	//服务器给出时间
 	float ServerTimeOfReceipt = GetWorld()->GetTimeSeconds();
+	//服务器调用客户端RPC
 	ClientRequestServerTime(TimeOfClientRequest, ServerTimeOfReceipt);
 }
 
 void ABlasterPlayerController::ClientRequestServerTime_Implementation(float TimeOfClientRequest,
 	float TimeServerReceivedClientRequest)
 {
+	//计算往返时间
 	float RoundTripTime = GetWorld()->GetTimeSeconds() - TimeOfClientRequest;
+	//单程时间
 	SingleTripTime = 0.5f * RoundTripTime;
+	//当前服务器时间
 	float CurrentServerTime = TimeServerReceivedClientRequest + SingleTripTime;
+	//设置客户端服务器时间间隔
 	ClientServerDelta = CurrentServerTime - GetWorld()->GetTimeSeconds();
 }
 
