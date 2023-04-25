@@ -1,14 +1,11 @@
-
-
 #include "HealthPickup.h"
-
 #include "Blaster/BlasterComponents/BuffComponent.h"
 #include "Blaster/Character/BlasterCharacter.h"
 
 AHealthPickup::AHealthPickup()
 {
+	//允许复制
 	bReplicates = true;
-	
 }
 
 void AHealthPickup::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -22,9 +19,10 @@ void AHealthPickup::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AA
 		UBuffComponent* Buff = BlasterCharacter->GetBuff();
 		if (Buff)
 		{
+			//为玩家恢复生命值
 			Buff->Heal(HealAmount, HealingTime);
 		}
 	}
-
+	//销毁
 	Destroy();
 }

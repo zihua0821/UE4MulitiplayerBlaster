@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "AmmoPickup.h"
 #include "Blaster/Character/BlasterCharacter.h"
 #include "Blaster/BlasterComponents/CombatComponent.h"
@@ -17,8 +14,10 @@ void AAmmoPickup::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 		UCombatComponent* Combat = BlasterCharacter->GetCombat();
 		if (Combat)
 		{
+			//为玩家增加子弹
 			Combat->PickupAmmo(WeaponType, AmmoAmount);
 		}
 	}
+	//销毁
 	Destroy();
 }

@@ -1,8 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "JumpPickup.h"
-
 #include "Blaster/BlasterComponents/BuffComponent.h"
 #include "Blaster/Character/BlasterCharacter.h"
 
@@ -17,9 +13,10 @@ void AJumpPickup::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 		UBuffComponent* Buff = BlasterCharacter->GetBuff();
 		if (Buff)
 		{
+			//为玩家应用跳跃BUFF
 			Buff->BuffJump(JumpZVelocityBuff, JumpBuffTime);
 		}
 	}
-
+	//销毁
 	Destroy();
 }

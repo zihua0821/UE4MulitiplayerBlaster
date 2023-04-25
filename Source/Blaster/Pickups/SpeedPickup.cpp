@@ -1,8 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "SpeedPickup.h"
-
 #include "Blaster/BlasterComponents/BuffComponent.h"
 #include "Blaster/Character/BlasterCharacter.h"
 
@@ -18,9 +14,10 @@ void ASpeedPickup::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 		UBuffComponent* Buff = BlasterCharacter->GetBuff();
 		if (Buff)
 		{
+			//为玩家应用速度BUFF
 			Buff->BuffSpeed(BaseSpeedBuff, CrouchSpeedBuff, SpeedBuffTime);
 		}
 	}
-
+	//摧毁
 	Destroy();
 }

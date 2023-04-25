@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "ShieldPickup.h"
 #include "Blaster/Character/BlasterCharacter.h"
 #include "Blaster/BlasterComponents/BuffComponent.h"
@@ -16,9 +13,10 @@ void AShieldPickup::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AA
 		UBuffComponent* Buff = BlasterCharacter->GetBuff();
 		if (Buff)
 		{
+			//为玩家恢复护盾值
 			Buff->ReplenishShield(ShieldReplenishAmount, ShieldReplenishTime);
 		}
 	}
-
+	//摧毁
 	Destroy();
 }
