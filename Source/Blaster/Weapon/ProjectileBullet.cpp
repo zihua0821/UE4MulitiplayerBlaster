@@ -1,9 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "ProjectileBullet.h"
-
-#include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Blaster/Character/BlasterCharacter.h"
@@ -12,6 +7,7 @@
 
 AProjectileBullet::AProjectileBullet()
 {
+	//初始化子弹移动组件
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
 	ProjectileMovementComponent->bRotationFollowsVelocity = true;
 	ProjectileMovementComponent->SetIsReplicated(true);
@@ -47,13 +43,15 @@ void AProjectileBullet::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 		{
 			if (OwnerCharacter->HasAuthority() && !bUseServerSideRewind)
 			{
+				//爆头伤害
 				const float DamageToCause = Hit.BoneName.ToString() == FString("head") ? HeadShotDamage : Damage;
-
+				//应用伤害
 				UGameplayStatics::ApplyDamage(OtherActor, DamageToCause, OwnerController, this, UDamageType::StaticClass());
 				Super::OnHit(HitComp, OtherActor, OtherComp, NormalImpulse, Hit);
 				return;
 			}
 			ABlasterCharacter* HitCharacter = Cast<ABlasterCharacter>(OtherActor);
+			//如果启用服务器倒带则请求得分
 			if (bUseServerSideRewind && OwnerCharacter->GetLagCompensation() && OwnerCharacter->IsLocallyControlled() && HitCharacter)
 			{
 				OwnerCharacter->GetLagCompensation()->ProjectileServerScoreRequest(
@@ -73,6 +71,7 @@ void AProjectileBullet::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// 轨迹预测
 	// FPredictProjectilePathParams PathParams;
 	// PathParams.bTraceWithChannel = true;
 	// PathParams.bTraceWithCollision = true;

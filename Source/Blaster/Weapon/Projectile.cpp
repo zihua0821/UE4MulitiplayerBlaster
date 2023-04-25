@@ -1,24 +1,19 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Projectile.h"
-
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
 #include "Blaster/Blaster.h"
-#include "Blaster/Character/BlasterCharacter.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
 
-// Sets default values
 AProjectile::AProjectile()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+ 	//启用Tick
 	PrimaryActorTick.bCanEverTick = true;
+	//启用复制
 	bReplicates = true;	
-
+	//初始化碰撞盒
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("CollsionBox"));
 	SetRootComponent(CollisionBox);
 	CollisionBox->SetCollisionObjectType(ECC_WorldDynamic);
@@ -27,14 +22,13 @@ AProjectile::AProjectile()
 	CollisionBox->SetCollisionResponseToChannel(ECC_Visibility,ECR_Block);
 	CollisionBox->SetCollisionResponseToChannel(ECC_WorldStatic,ECR_Block);
 	CollisionBox->SetCollisionResponseToChannel(ECC_SkeletalMesh, ECollisionResponse::ECR_Block);
-	
 }
 
-// Called when the game starts or when spawned
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//生成轨迹
 	if (Tracer)
 	{
 		TracerComponent = UGameplayStatics::SpawnEmitterAttached(
@@ -46,7 +40,7 @@ void AProjectile::BeginPlay()
 			EAttachLocation::KeepWorldPosition
 		);
 	}
-
+	//服务器绑定碰撞事件
 	if (HasAuthority())
 	{
 		CollisionBox->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
@@ -55,6 +49,7 @@ void AProjectile::BeginPlay()
 
 void AProjectile::StartDestroyTimer()
 {
+	//开启计时器
 	GetWorldTimerManager().SetTimer(
 		DestroyTimer,
 		this,
@@ -65,18 +60,20 @@ void AProjectile::StartDestroyTimer()
 
 void AProjectile::DestroyTimerFinished()
 {
+	//计时器结束销毁
 	Destroy();
 }
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
                         FVector NormalImpulse, const FHitResult& Hit)
 {
-	
+	//碰撞销毁
 	Destroy();
 }
 
 void AProjectile::SpawnTrailSystem()
 {
+	//生成尾迹
 	if (TrailSystem)
 	{
 		TrailSystemComponent = UNiagaraFunctionLibrary::SpawnSystemAttached(
@@ -94,7 +91,7 @@ void AProjectile::SpawnTrailSystem()
 void AProjectile::ExplodeDamage()
 {
 	APawn* FiringPawn = GetInstigator();
-	if (FiringPawn && HasAuthority())
+	if (FiringPawn && HasAuthority())//服务器应用爆炸伤害
 	{
 		AController* FiringController = FiringPawn->GetController();
 		if (FiringController)
@@ -116,7 +113,6 @@ void AProjectile::ExplodeDamage()
 	}
 }
 
-// Called every frame
 void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -127,10 +123,12 @@ void AProjectile::Destroyed()
 {
 	Super::Destroyed();
 
+	//生成爆炸粒子
 	if (ImpactParticles)
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactParticles, GetActorTransform());
 	}
+	//播放爆炸音效
 	if (ImpactSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());

@@ -1,8 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "HitScanWeapon.h"
-
 #include "DrawDebugHelpers.h"
 #include "Blaster/BlasterComponents/LagCompensationComponent.h"
 #include "Blaster/Character/BlasterCharacter.h"
@@ -16,29 +12,36 @@ void AHitScanWeapon::Fire(const FVector& HitTarget)
 {
 	Super::Fire(HitTarget);
 
+	//获取拥有者
 	APawn* OwnerPawn = Cast<APawn>(GetOwner());
 	if (OwnerPawn == nullptr)
 	{
 		return;
 	}
+	//获取攻击者控制器
 	AController* InstigatorController = OwnerPawn->GetController();
-	
+	//获取枪口插槽
 	const USkeletalMeshSocket* MuzzleFlashSocket = GetWeaponMesh()->GetSocketByName("MuzzleFlash");
 	if (MuzzleFlashSocket)
 	{
+		//获取枪口变换
 		FTransform SocketTransform = MuzzleFlashSocket->GetSocketTransform(GetWeaponMesh());
+		//起始位置
 		FVector Start = SocketTransform.GetLocation();
-
+		//检测结果
 		FHitResult FireHit;
+		//进行射线检测
 		WeaponTraceHit(Start, HitTarget, FireHit);
-		
+		//获取受击者
 		ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(FireHit.GetActor());
 		if (BlasterCharacter && InstigatorController)
 		{
-			bool bCauseAuthDamage = !bUseServerSideRewind || OwnerPawn->IsLocallyControlled();
-			if (HasAuthority() && bCauseAuthDamage)
+			bool bCauseAuthDamage = !bUseServerSideRewind || OwnerPawn->IsLocallyControlled();//不使用服务器倒带或者是本地控制的玩家
+			if (HasAuthority() && bCauseAuthDamage)//服务器权威
 			{
+				//是否爆头
 				const float DamageToCause = FireHit.BoneName.ToString() == FString("head") ? HeadShotDamage : Damage;
+				//应用伤害
 				UGameplayStatics::ApplyDamage(
 					BlasterCharacter,
 					DamageToCause,
@@ -47,12 +50,13 @@ void AHitScanWeapon::Fire(const FVector& HitTarget)
 					UDamageType::StaticClass()
 				);
 			}
-			if (!HasAuthority() && bUseServerSideRewind)
+			if (!HasAuthority() && bUseServerSideRewind)//非权威但使用服务器倒带
 			{
 				BlasterOwnerCharacter = BlasterOwnerCharacter == nullptr ? Cast<ABlasterCharacter>(OwnerPawn) : BlasterOwnerCharacter;
 				BlasterOwnerController = BlasterOwnerController == nullptr ? Cast<ABlasterPlayerController>(InstigatorController) : BlasterOwnerController;
 				if (BlasterOwnerController && BlasterOwnerCharacter && BlasterOwnerCharacter->GetLagCompensation() && BlasterOwnerCharacter->IsLocallyControlled())
 				{
+					//请求得分
 					BlasterOwnerCharacter->GetLagCompensation()->ServerScoreRequest(
 						BlasterCharacter,
 						Start,
@@ -62,6 +66,7 @@ void AHitScanWeapon::Fire(const FVector& HitTarget)
 				}
 			}
 		}
+		//播放子弹爆炸效果
 		if (ImpactParticles)
 		{
 			UGameplayStatics::SpawnEmitterAtLocation(
@@ -71,6 +76,7 @@ void AHitScanWeapon::Fire(const FVector& HitTarget)
 				FireHit.ImpactNormal.Rotation()
 			);
 		}
+		//命中音效
 		if (HitSound)
 		{
 			UGameplayStatics::PlaySoundAtLocation(
@@ -79,6 +85,7 @@ void AHitScanWeapon::Fire(const FVector& HitTarget)
 				FireHit.ImpactPoint
 			);
 		}
+		//枪口火焰
 		if (MuzzleFlash)
 		{
 			UGameplayStatics::SpawnEmitterAtLocation(
@@ -87,6 +94,7 @@ void AHitScanWeapon::Fire(const FVector& HitTarget)
 				SocketTransform
 			);
 		}
+		//开火音效
 		if (FireSound)
 		{
 			UGameplayStatics::PlaySoundAtLocation(
@@ -105,7 +113,9 @@ void AHitScanWeapon::WeaponTraceHit(const FVector& TraceStart, const FVector& Hi
 	UWorld* World = GetWorld();
 	if (World)
 	{
+		//检测终点
 		FVector End = TraceStart + (HitTarget - TraceStart) * 1.25f;
+		//执行射线检测
 		World->LineTraceSingleByChannel(
 			OutHit,
 			TraceStart,
@@ -116,13 +126,12 @@ void AHitScanWeapon::WeaponTraceHit(const FVector& TraceStart, const FVector& Hi
 		if (OutHit.bBlockingHit)
 		{
 			BeamEnd = OutHit.ImpactPoint;
-			
 		}
-		else
+		else//没有命中则使用终点
 		{
 			OutHit.ImpactPoint = End;
 		}
-		
+		//生成烟雾轨迹
 		if (BeamParticles)
 		{
 			UParticleSystemComponent* Beam = UGameplayStatics::SpawnEmitterAtLocation(
@@ -134,6 +143,7 @@ void AHitScanWeapon::WeaponTraceHit(const FVector& TraceStart, const FVector& Hi
 				);
 			if (Beam)
 			{
+				//设置粒子方向
 				Beam->SetVectorParameter(FName("Target"), BeamEnd);
 			}
 		}
